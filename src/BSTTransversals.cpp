@@ -15,21 +15,64 @@ it and understand how testing works .
 */
 
 #include <stdio.h>
-
+#include <stddef.h>
 struct node{
 	struct node * left;
 	int data;
 	struct node *right;
 };
+void Addpre(struct node *root, int arr[], int *i){
+	if (root == NULL)
+		return;
 
+	arr[*i] = root->data;
+	++*i;
+	Addpre(root->left, arr, i);
+	Addpre(root->right, arr, i);
+}
+void Addpos(struct node *root, int arr[], int *i){
+	if (root == NULL)
+		return;
+	Addpos(root->left, arr, i);
+	Addpos(root->right, arr, i);
+	arr[*i] = root->data;
+	++*i;
+}
+void Addin(struct node *root, int arr[], int *i){
+	if (root == NULL)
+		return;
+	Addin(root->left, arr, i);
+	arr[*i] = root->data;
+	++*i;
+	Addin(root->right, arr, i);
 
+}
 void inorder(struct node *root, int *arr){
-	
+	if (root == NULL || arr == NULL)
+		return;
+	else
+	{
+		int x = 0;
+		Addin(root, arr, &x);
+	}
 }
 void preorder(struct node *root, int *arr){
-	
+	if (root == NULL || arr == NULL)
+		return;
+	else
+	{
+		int x = 0;
+		Addpre(root, arr, &x);
+	}
 }
 void postorder(struct node *root, int *arr){
-	
+	if (root == NULL || arr == NULL)
+		return;
+	else
+	{
+		int x = 0;
+		Addpos(root, arr, &x);
+	}
 }
+
 

@@ -3,14 +3,14 @@ Given a Binary Search Tree ,Copy All Elements in BST into a Array in horizontal 
 each row is copied from Right to Left.
 
 First copy the Frist row ,Next the second row etc .
-Ex : If Bst is 
-    6                        <-- Copy this first 
-   / \
-  4  10                      <-- Copy this row next from 10 and next 4 ..
- / \   \
-1   5   15                   <-- Order her is 15 ,5 ,1 
-          \
-          17
+Ex : If Bst is
+		 6                        <-- Copy this first
+		/ \
+       4  10                      <-- Copy this row next from 10 and next 4 ..
+	 /	\   \
+	1   5   15                   <-- Order her is 15 ,5 ,1
+	\
+	17
 
 Output will be a array consisting of [6,10,4,15,5,1,17];
 
@@ -28,10 +28,57 @@ struct node{
 	int data;
 	struct node *right;
 };
-
-
-
+int countnodes(struct node *p)
+{
+	if (p == NULL)
+		return(0);
+	else
+		if (p->left == NULL && p->right == NULL)
+			return(1);
+		else
+			return(1 + (countnodes(p->left) + countnodes(p->right)));
+}
+int heightofbst(struct node *root){
+	if (root == NULL)
+		return 0;
+	else
+	{
+		int lheight = heightofbst(root->left);
+		int rheight = heightofbst(root->right);
+		if (lheight > rheight)
+			return(lheight + 1);
+		else return(rheight + 1);
+	}
+}
+void printGivenLevel(struct node* root, int level, int *arr, int *index)
+{
+	if (root == NULL)
+		return;
+	if (level == 1)
+	{
+		arr[*index] = root->data;
+		*index = *index + 1;
+	}
+	else if (level > 1)
+	{
+		printGivenLevel(root->right, level - 1, arr, index);
+		printGivenLevel(root->left, level - 1, arr, index);
+	}
+}
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	if (root == NULL)
+		return NULL;
+	else
+	{
+		int index = 0, i;
+		int n = countnodes(root);
+		int *arr = (int*)malloc(sizeof(int)*n);
+		int h = heightofbst(root);
+		for (i = 0; i <= h; i++)
+		{
+			printGivenLevel(root, i, arr, &index);
+		}
+		return(arr);
+	}
 }
